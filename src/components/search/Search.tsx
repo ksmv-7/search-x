@@ -1,11 +1,11 @@
 import React, { FC, useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { useSearchContext } from "./SearchContext";
 import { useDebounce } from "../../hooks/common/hooks";
 import { SearchItem } from "../../types/search/types";
 import { MOCK_DB } from "../../database/mockDatabase";
 import { styles } from "../../styles/search/styles";
 import { SearchBox } from "./SearchBox";
 import { SearchResults } from "./SearchResults";
+import { useSearchContext } from "../../hooks/search/hooks";
 
 export const Search: FC = () => {
   const { searchHistory, addToHistory, removeFromHistory } = useSearchContext();
@@ -14,6 +14,8 @@ export const Search: FC = () => {
   const debouncedQuery = useDebounce({ value: query, delay: 200 });
   const [suggestions, setSuggestions] = useState<SearchItem[]>([]);
   const [results, setResults] = useState<SearchItem[]>([]);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [searchTime, setSearchTime] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const shouldShowSuggestions = useMemo(() => suggestions.length > 0, [suggestions]);
@@ -38,18 +40,22 @@ export const Search: FC = () => {
     const filteredSuggestions = MOCK_DB.filter((item) =>
       item.title.toLowerCase().startsWith(debouncedQuery.toLowerCase())
     ).slice(0, 10);
-    setSuggestions(filteredSuggestions);
+      setSuggestions(filteredSuggestions);
   }, [debouncedQuery]);
 
-  const performSearch = useCallback((text: string) => {
-    if (!text.trim()) {
-      return;
-    }
+    const performSearch = useCallback((text: string) => {
+      if (!text.trim()) {
+        return;
+      }
 
+    const startTime = performance.now();
     const filteredResults = MOCK_DB.filter((item) =>
       item.title.toLowerCase().includes(text.toLowerCase())
     );
+    const endTime = performance.now();
+    setSearchTime(endTime - startTime);
     setResults(filteredResults);
+    setHasSearched(true);
   }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -73,6 +79,7 @@ export const Search: FC = () => {
     setSuggestions([]);
     setResults([]);
     inputRef.current?.focus();
+    setHasSearched(false);
   };
 
   const handleRemoveHistory = (
@@ -100,7 +107,12 @@ export const Search: FC = () => {
         handleRemoveHistory={handleRemoveHistory}
       />
 
-      <SearchResults results={results} />
+      <SearchResults
+        results={results}
+        searchTime={searchTime}
+        resultCount={results.length}
+        hasSearched={hasSearched}
+      />
     </div>
   );
 };

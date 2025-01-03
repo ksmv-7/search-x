@@ -1,10 +1,8 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { SearchItem } from "../../types/search/types";
 import { styles } from "../../styles/search/styles";
-import {MagnifierIcon} from "./icons/MagnifierIcon";
-import {MicrophoneIcon} from "./icons/MicrophoneIcon";
-import {RemoveSearchResultIcon} from "./icons/RemoveSearchResultIcon";
 import { SuggestionsList } from "./SuggestionsList";
+import { MagnifierIcon, MicrophoneIcon, RemoveSearchResultIcon } from "./icons";
 
 type SearchBoxProps = {
   query: string;
@@ -31,6 +29,17 @@ export const SearchBox: FC<SearchBoxProps> = ({
   handleSelectSuggestion,
   handleRemoveHistory,
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    // Delay to allow click events on suggestions to register
+    setTimeout(() => setIsFocused(false), 100);
+  };
+
   return (
     <div style={styles.searchBox}>
       <span style={styles.searchIcon}>
@@ -44,6 +53,8 @@ export const SearchBox: FC<SearchBoxProps> = ({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         placeholder="Search..."
       />
 
@@ -57,7 +68,7 @@ export const SearchBox: FC<SearchBoxProps> = ({
         <MicrophoneIcon />
       </span>
 
-      {shouldShowSuggestions && (
+      {shouldShowSuggestions && isFocused && (
         <SuggestionsList
           suggestions={suggestions}
           searchHistory={searchHistory}

@@ -1,7 +1,7 @@
 // src/App.tsx
 
 import React, { FC } from "react";
-import { SearchProvider } from "./components/search/SearchContext";
+import { SearchProvider } from "./components/search/context/SearchContext";
 import { Search } from "./components/search/Search";
 
 const App: FC = () => {

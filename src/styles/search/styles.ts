@@ -15,6 +15,28 @@ export const styles: Record<string, React.CSSProperties> = {
     fontSize: "2rem",
     fontWeight: 400,
   },
+  resultsContainer: {
+    marginTop: "20px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+  resultsList: {
+    width: "100%",
+    textAlign: "left",
+    paddingLeft: "40px",
+  },
+  metadataContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: "16px",
+  },
+  metadata: {
+    marginBottom: "16px",
+    color: "#555",
+    fontSize: "14px",
+  },
   searchBox: {
     position: "relative",
     width: "80%",
@@ -80,12 +102,6 @@ export const styles: Record<string, React.CSSProperties> = {
     border: "none",
     color: "grey",
     cursor: "pointer",
-  },
-  metadata: {
-    width: "80%",
-    maxWidth: "600px",
-    marginTop: "20px",
-    textAlign: "left",
   },
   results: {
     width: "80%",

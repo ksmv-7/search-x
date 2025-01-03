@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { SearchItem } from "../../types/search/types";
 import { styles } from "../../styles/search/styles";
-import { SearchHistoryIcon } from "./icons/SearchHistoryIcon";
-import { MagnifierIcon } from "./icons/MagnifierIcon";
+import { MagnifierIcon, SearchHistoryIcon } from "./icons";
 
 type SuggestionItemProps = {
   item: SearchItem;
