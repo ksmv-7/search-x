@@ -18,7 +18,7 @@ export const Search: FC = () => {
   const [searchTime, setSearchTime] = useState<number>(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
-  const shouldShowSuggestions = useMemo(() => suggestions.length > 0, [suggestions]);
+  const shouldShowSuggestions = suggestions.length > 0;
 
   const isSelectingRef = useRef(false);
 
