@@ -28,17 +28,18 @@ export const SuggestionsList: FC<SuggestionsListProps> = ({
 
   return (
     <div style={styles.suggestions}>
-      {sortedSuggestions.map((item) => {
-        const inHistory = searchHistory.includes(item.title);
-        return (
-          <SuggestionItem
-            key={item.title}
-            item={item}
-            inHistory={inHistory}
-            handleSelectSuggestion={handleSelectSuggestion}
-            handleRemoveHistory={handleRemoveHistory}
-          />
-        );
+      {
+        sortedSuggestions.map((item) => {
+          const inHistory = searchHistory.includes(item.title);
+          return (
+            <SuggestionItem
+              key={item.title}
+              item={item}
+              inHistory={inHistory}
+              handleSelectSuggestion={handleSelectSuggestion}
+              handleRemoveHistory={handleRemoveHistory}
+            />
+          );
       })}
     </div>
   );
