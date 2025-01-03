@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useDebounce } from "../../hooks/common/hooks";
 import { SearchItem } from "../../types/search/types";
 import { MOCK_DB } from "../../database/mockDatabase";
@@ -40,13 +40,13 @@ export const Search: FC = () => {
     const filteredSuggestions = MOCK_DB.filter((item) =>
       item.title.toLowerCase().startsWith(debouncedQuery.toLowerCase())
     ).slice(0, 10);
-      setSuggestions(filteredSuggestions);
+    setSuggestions(filteredSuggestions);
   }, [debouncedQuery]);
 
-    const performSearch = useCallback((text: string) => {
-      if (!text.trim()) {
-        return;
-      }
+  const performSearch = useCallback((text: string) => {
+    if (!text.trim()) {
+      return;
+    }
 
     const startTime = performance.now();
     const filteredResults = MOCK_DB.filter((item) =>
@@ -58,37 +58,34 @@ export const Search: FC = () => {
     setHasSearched(true);
   }, []);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       performSearch(query);
       addToHistory(query);
       setSuggestions([]);
     }
-  };
+  }, [performSearch, query, addToHistory]);
 
-  const handleSelectSuggestion = (item: SearchItem) => {
+  const handleSelectSuggestion = useCallback((item: SearchItem) => {
     isSelectingRef.current = true;
     setQuery(item.title);
     performSearch(item.title);
     addToHistory(item.title);
     setSuggestions([]);
-  };
+  }, [performSearch, addToHistory]);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setQuery("");
     setSuggestions([]);
     setResults([]);
     inputRef.current?.focus();
     setHasSearched(false);
-  };
+  }, []);
 
-  const handleRemoveHistory = (
-    itemToRemove: string,
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleRemoveHistory = useCallback((itemToRemove: string, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     removeFromHistory(itemToRemove);
-  };
+  }, [removeFromHistory]);
 
   return (
     <div style={styles.container}>
