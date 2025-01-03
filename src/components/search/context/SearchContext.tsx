@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, FC, ReactNode } from "react";
+import { createContext, useState, FC, ReactNode } from "react";
 import { SearchContextProps } from "../../../types/search/types";
 
 export const SearchContext = createContext<SearchContextProps | undefined>(undefined);

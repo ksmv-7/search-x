@@ -36,7 +36,6 @@ export const SearchBox: FC<SearchBoxProps> = ({
   };
 
   const handleBlur = () => {
-    // Delay to allow click events on suggestions to register
     setTimeout(() => setIsFocused(false), 100);
   };
 
